@@ -48,12 +48,14 @@
 
 - Python 3.13（要求 >=3.12,<3.14）；venv 在 `/home/user/.venvs/pyhealth`（会话容器内，非持久）。
 - 云端容器无法访问 download.pytorch.org，torch 需从 PyPI 安装。
+- 容器访问不了 huggingface.co，相关测试必然失败；另需 `pip install 'monai>=1.6.1,<2'`。
+- 跑测试：`pytest tests/core -q`（和上游 CI 一致，约 15 分钟）；只跑相关的：`pytest tests/core/test_cardiology*.py tests/core/test_isruc.py`
 
 ## 进度
 
 - [x] 1. Fork 到 rayrayowo/PyHealth
 - [x] 2. 建立 `notes` 分支与本文件
-- [ ] 3. 本地环境安装、跑通现有测试
+- [x] 3. 本地环境安装、跑通现有测试（2026-11-16：tests/core 3621 通过；42 个失败全是容器环境问题：HuggingFace 被代理拦截、缺 nibabel、以 root 运行导致只读目录测试失效）
 - [~] 4. 读 TUEV / ISRUC / PTB-XL 迁移写法，写 BTY-24 方案（放在本文件「方案」一节），由用户确认
 - [ ] 5. 实现 + 合成数据测试 + 通过 check_pr_rules
 - [ ] 6. 用户在 Discord/Slack 说明认领，用户提交 `[BTY-24]` PR 到上游
