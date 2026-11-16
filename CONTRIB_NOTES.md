@@ -54,7 +54,7 @@
 - [x] 1. Fork 到 rayrayowo/PyHealth
 - [x] 2. 建立 `notes` 分支与本文件
 - [ ] 3. 本地环境安装、跑通现有测试
-- [ ] 4. 读 TUEV / ISRUC / PTB-XL 迁移写法，写 BTY-24 方案（放在本文件「方案」一节），由用户确认
+- [~] 4. 读 TUEV / ISRUC / PTB-XL 迁移写法，写 BTY-24 方案（放在本文件「方案」一节），由用户确认
 - [ ] 5. 实现 + 合成数据测试 + 通过 check_pr_rules
 - [ ] 6. 用户在 Discord/Slack 说明认领，用户提交 `[BTY-24]` PR 到上游
 
@@ -63,6 +63,38 @@
 - 2026-11-16：选定 PyHealth 作为主攻项目（医疗数据 + 论文署名先例 + 与简历的数据校验主线一致）。
 - 2026-11-16：首个任务选 BTY-24（公开数据、纯数据工程、生理信号方向，与运动康复/可穿戴相关）。
 
-## 方案
+## 方案（BTY-24 草案，待用户确认）
 
-（第 4 步填写）
+### 读旧代码发现的问题（PR 描述里要写清楚，这是我们的亮点）
+
+1. **采样率写死为 500 Hz**：`cardiology_detect.py` 用 `500 * epoch_sec` 切窗。Challenge 2020 里
+   PTB 是 1000 Hz、INCART 是 257 Hz，所以这两个来源的"10 秒窗口"其实不是 10 秒。采样率在 `.hea`
+   第一行就有（`<record> <n_sig> <fs> <n_samples> ...`）。（待用真实数据核实）
+2. **按行号倒数解析表头**：`label_content[-4]` 取 Dx、`[-5]` Sex、`[-6]` Age，表头注释行顺序或数量一变就错位。
+   应按 `#Dx:` / `#Sex:` / `#Age:` 前缀解析。
+3. **"patient" 其实是 g1/g2… 分卷文件夹**：旧代码把每个 `gN` 文件夹当成一个病人，但这些文件夹只是
+   约 1000 条记录一卷的分包，不是病人。按病人划分训练/测试集会因此出错。（待核实，需和维护者讨论 ID 方案）
+4. `len(os.listdir(dataset_root)) - 1` 假设目录里恰好多一个 `RECORDS` 文件，有 `index.html` 等就会少算或多算。
+
+### 实现计划（参照 ISRUC #1486 的写法）
+
+1. `pyhealth/datasets/cardiology.py`：`CardiologyDataset(BaseDataset)`
+   - `prepare_metadata()` 扫描 `<root>/<source>/g*/<record>.hea`，按键解析 WFDB 表头，写
+     `cardiology-pyhealth.csv`（一行一条记录）：`patient_id, record_id, source, signal_file,
+     header_file, sampling_rate, n_samples, n_leads, age, sex, dx_codes`
+   - 用 `metadata_csv.py` 的工具（root 不可写时落到 cache），与 ISRUC 一致
+   - 参数：`sources: list[str]`；旧的 `chosen_dataset=[1,1,1,1,1,1]` 继续接受，发 DeprecationWarning
+   - `default_task` 返回新任务类
+2. `pyhealth/datasets/configs/cardiology.yaml`：表 `recordings`
+3. `pyhealth/tasks/cardiology_detect.py`：新增 `CardiologyDetection(BaseTask)`，参数 `category`
+   ∈ {AR, BBBFB, AD, CD, WA}，复用旧代码的 SNOMED 编码集合；按每条记录的真实采样率切窗
+   （可选重采样到统一频率）。**旧的 `cardiology_is*_fn` 函数保留不动**，满足 "keep cardiology_detect working"。
+4. 测试 `tests/core/test_cardiology.py`：合成 `.hea` + `.mat` 文件，覆盖目录布局、按键解析表头、缺字段、
+   混合采样率（500/1000/257）、来源筛选、dev 模式、`default_task`、窗口数量与标签
+5. 文档：API 文档条目 + 示例；所有新公开函数带 `>>>` 示例；`ruff` 与 `tools/check_pr_rules.py` 通过
+
+### 开工前要问维护者的问题（用户在 Discord / issue 里问）
+
+- patient_id 方案：每条记录当作一个病人，还是保留旧 ID 以兼容？
+- 非 500 Hz 的来源：重采样到 500 Hz，还是按真实采样率切窗？
+- PTB-XL 已有 `PTBXLDataset`：Cardiology 里的 `ptb-xl` 来源保持独立，还是复用它？
