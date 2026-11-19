@@ -101,3 +101,27 @@
 - patient_id 方案：每条记录当作一个病人，还是保留旧 ID 以兼容？
 - 非 500 Hz 的来源：重采样到 500 Hz，还是按真实采样率切窗？
 - PTB-XL 已有 `PTBXLDataset`：Cardiology 里的 `ptb-xl` 来源保持独立，还是复用它？
+
+## bounty.yaml 审计（2026-11-19）
+
+上游 `bounty.yaml` 里仍标为未完成、但代码已合并进 master 的 bounty：
+
+| BTY | 标题 | 已合并 PR |
+|---|---|---|
+| 22 | VAE PyHealth 2.0 Migration | #1358 |
+| 27 | YAIB Benchmarks | #1338、#1417、#1423 |
+| 37 | MIRA | #1420 |
+| 40 | DiPro | #1398 |
+| 41 | HeartLang | #1372 |
+| 42 | APN | #1373 |
+| 43 | ARMR | #1371 |
+| 52 | APRICOT-M | #1383 |
+| 53 | KnowRare | #1421 |
+| 54 | LLMs as EHR Encoders | #1369 |
+| 55 | MEME | #1384 |
+| 56 | TRACE | #1382 |
+| 58 | ETHOS-ARES | #1397 |
+| 60 | TrajSurv | #1368 |
+
+已被 PR 认领：21（#1303）、23（#1500）、24（#1551）、72（#1412、#1428）等。
+真正开放且无需 MIMIC 认证的只剩 62 MEDFAIR、63 MIU-VL。
