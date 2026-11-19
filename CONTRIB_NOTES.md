@@ -125,3 +125,12 @@
 
 已被 PR 认领：21（#1303）、23（#1500）、24（#1551）、72（#1412、#1428）等。
 真正开放且无需 MIMIC 认证的只剩 62 MEDFAIR、63 MIU-VL。
+
+## PR 1：bounty.yaml 审计（2026-11-19）
+
+- 分支：`bounty-yaml-audit`（基于 upstream/master 4b29df3），只改 `bounty.yaml`
+- 细查后修正了上面的表：完全完成 6 个（22、27、40、43、56、58）→ 标 `complete`；
+  部分完成 8 个（37、41、42、52、53、54、55、60）→ 在 description 末尾写明已合并内容和剩余部分
+- 已用 `tools/update_bounty_board.py --dry-run` 验证：6 个从看板消失，8 个仍显示为待认领
+- 状态：等用户在 GitHub 上开 PR（标题不要带 `[BTY-x]`，否则会被当成认领）
+- 后续可做的开放数据 bounty：41 HeartLang 剩余的 CPSC2018 / Chapman 基准；37 MIRA 的 PTB-XL / Sleep-EDF 任务
