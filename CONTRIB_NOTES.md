@@ -134,3 +134,20 @@
 - 已用 `tools/update_bounty_board.py --dry-run` 验证：6 个从看板消失，8 个仍显示为待认领
 - 状态：等用户在 GitHub 上开 PR（标题不要带 `[BTY-x]`，否则会被当成认领）
 - 后续可做的开放数据 bounty：41 HeartLang 剩余的 CPSC2018 / Chapman 基准；37 MIRA 的 PTB-XL / Sleep-EDF 任务
+
+## PR 2：BTY-41 Chapman（2026-11-19）
+
+- 分支：`bty-41-heartlang-chapman`（基于 upstream/master 4b29df3），提交 7ea91e8
+- 内容：`pyhealth/tasks/chapman_heartlang.py`（`ChapmanShaoxingHeartLangClassification`、
+  `heartlang_csn_labels`、`preprocess_heartlang_csn`、`load_heartlang_csn_split`、`split_by_heartlang_csn`），
+  测试 `tests/core/test_chapman_heartlang.py`（14 个），API 文档 rst + tasks.rst 目录项
+- 复现 HeartLang 的 CSN 预处理：原始 ADC → min-max 到 [-3,3] → 100 Hz → 0.67–40 Hz 带通 → 心搏句子；38 个标签按其 CSV 列顺序
+- **数据发现**：HeartLang 的标签是按"子串"匹配生成的（AFIB 同时算 AF，1AVB 同时算 AVB/VB，STTC 算 ST，CCR 算 CR，
+  LVQRSAL 算 SA），这条规则能 100% 复现其 23,026 行标签表；默认按论文复现，`label_match="exact"` 可关闭。
+  另外 SB（窦性心动过缓）不在 38 个标签里；其 CSV 的 age 列全是 12（无效）。
+- 未内置 HeartLang 的记录清单（MIT 许可允许，但要改 pyproject 打包配置）；`split_by_heartlang_csn` 读取用户本地的 HeartLang 仓库 CSV
+- 验证：新测试 14 通过；Chapman/HeartLang 相关测试 29 通过；ruff 通过；`tools/check_pr_rules.py` 通过
+- 未验证：没有真实数据和预训练权重（容器连不上 HuggingFace），未跑出论文数值
+- 待问维护者：标签默认用 heartlang 还是 exact；是否把记录清单内置进包里
+- CPSC2018 部分：等上游 #1551（Cardiology 2.0 迁移）合并后再做
+- 状态：等用户在 GitHub 上开 PR
