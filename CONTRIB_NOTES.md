@@ -151,3 +151,11 @@
 - 待问维护者：标签默认用 heartlang 还是 exact；是否把记录清单内置进包里
 - CPSC2018 部分：等上游 #1551（Cardiology 2.0 迁移）合并后再做
 - 状态：等用户在 GitHub 上开 PR
+
+## 已提交到上游（2026-11-22）
+
+- PR 1 → https://github.com/sunlabuiuc/PyHealth/pull/1570 （bounty.yaml 审计）
+- PR 2 → https://github.com/sunlabuiuc/PyHealth/pull/1571 （[BTY-41] HeartLang CSN on Chapman）
+- 两个分支提交前已 rebase 到 upstream/master（含 #1551），测试与规则检查重新通过
+- 下一步：#1551 已合并 → 可做 BTY-41 剩余的 CPSC2018 基准（新 PR）
+- 本会话无法直接操作上游仓库（与 fork 同名导致检出目录冲突），开 PR 需另开只挂 sunlabuiuc/PyHealth 的会话
