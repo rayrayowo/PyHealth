@@ -159,3 +159,9 @@
 - 两个分支提交前已 rebase 到 upstream/master（含 #1551），测试与规则检查重新通过
 - 下一步：#1551 已合并 → 可做 BTY-41 剩余的 CPSC2018 基准（新 PR）
 - 本会话无法直接操作上游仓库（与 fork 同名导致检出目录冲突），开 PR 需另开只挂 sunlabuiuc/PyHealth 的会话
+
+## 审核处理记录
+
+- 2026-11-25 #1571 AI 审核 need change：①共享 CHAPMAN_SNOMED_CODES/split_dx_codes → 保留共享，代码注释 + PR 描述说明理由（6137414）；②docstring 列出全部子串匹配情况；③示例脚本（可选）暂未做——需要真实数据和预训练权重，容器内无法验证。已请上游辅助会话更新描述并评论 /review。
+- 2026-11-25 #1570 AI 审核 approve（等人工）：可选建议已采纳——加 " — " 分隔符（1a408b5），描述补充 #1531。
+- 定时检查：每 4 小时一次（trigger "PyHealth PR review check"），触发到本会话。
