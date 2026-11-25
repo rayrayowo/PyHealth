@@ -165,3 +165,12 @@
 - 2026-11-25 #1571 AI 审核 need change：①共享 CHAPMAN_SNOMED_CODES/split_dx_codes → 保留共享，代码注释 + PR 描述说明理由（6137414）；②docstring 列出全部子串匹配情况；③示例脚本（可选）暂未做——需要真实数据和预训练权重，容器内无法验证。已请上游辅助会话更新描述并评论 /review。
 - 2026-11-25 #1570 AI 审核 approve（等人工）：可选建议已采纳——加 " — " 分隔符（1a408b5），描述补充 #1531。
 - 定时检查：每 4 小时一次（trigger "PyHealth PR review check"），触发到本会话。
+
+## PR 3: BTY-41 CPSC2018（2026-11-25）
+
+- 分支：`bty-41-heartlang-cpsc2018`（基于 upstream/master 5ea3f3c，含已合并的 #1551 CardiologyDataset 2.0），与 Chapman 分支互不依赖
+- 新增 `pyhealth/tasks/cpsc2018_heartlang.py`（`CPSC2018HeartLangClassification` + 预处理 / 标签 / 划分工具）、测试、API 文档
+- 复现 HeartLang `make_cpsc_dataset.py`：取前 5 s → 补零到 10 s → 整条记录 min-max 到 [-3, 3]（补零部分参与）→ FFT 重采样到 100 Hz，**无滤波**
+- 9 个标签的 SNOMED 编码已用 Challenge 2020 dx_mapping 的 CPSC 计数核对：与 HeartLang 三个 CSV 的标签计数逐一相同
+- 发现的数据问题（写进 PR）：每条输入一半是补零；补零参与 min-max 后变成非零常数，FFT 重采样在 5 s 处振铃；参考代码定义了 FIR 滤波但从未调用；CSV 的 scp_codes 列全为 `{}`；CRBBB/CLBBB 实为普通 RBBB/LBBB，VPC 编码为 "ventricular ectopics"
+- 状态：已推送，待开 PR（标题带 `[BTY-41]`）
