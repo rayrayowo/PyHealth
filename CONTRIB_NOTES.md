@@ -174,3 +174,5 @@
 - 9 个标签的 SNOMED 编码已用 Challenge 2020 dx_mapping 的 CPSC 计数核对：与 HeartLang 三个 CSV 的标签计数逐一相同
 - 发现的数据问题（写进 PR）：每条输入一半是补零；补零参与 min-max 后变成非零常数，FFT 重采样在 5 s 处振铃；参考代码定义了 FIR 滤波但从未调用；CSV 的 scp_codes 列全为 `{}`；CRBBB/CLBBB 实为普通 RBBB/LBBB，VPC 编码为 "ventricular ectopics"
 - 状态：已推送，待开 PR（标题带 `[BTY-41]`）
+
+- 2026-11-26 PR 3 已开：https://github.com/sunlabuiuc/PyHealth/pull/1613 （[BTY-41] CPSC2018）。上游辅助会话已获用户长期授权（开 PR / 改描述 / 评论 /review，不含合并）。
