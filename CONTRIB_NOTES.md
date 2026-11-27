@@ -180,3 +180,5 @@
 - 2026-11-26 定时检查：#1571 AI 审核 approve（commit 6137414），可由用户评论 /merge；两条可选建议（NaN 输入、空 split 静默）留作合并后的小 PR。#1613 尚无审核，已主动加入同样两处加固（非有限值报错、空 split 警告），17 测试通过并推送。#1570 仍等人工审核。
 
 - 2026-11-27 定时检查：#1613 AI 审核 approve（c214278）→ 用户可 /merge；可选：NaN 记录应跳过而非中断 set_task（留作后续）。#1571 维护者 solarsys 合并了 master 解决 __init__ 冲突（189463b），重审 need change → 新增不 mock QRS 的 set_task 测试 + CSN 线性探测示例脚本（5b9d2e0），已请辅助会话更新描述并 /review。#1570 澄清 MEME 剩余的是 ED decompensation（medmod 那个是 ICU+CXR），描述补充 handle 来源。
+
+- 2026-11-27 🎉 #1613 合并（00:44 UTC，98d0026）、#1571 合并（02:37 UTC，5cf31ab）→ BTY-41 全部完成；上游文件头保留 "Author: rayrayowo"。#1570 合并 master 并把 BTY-41 标为 complete（@solarsys #1372, @rayrayowo #1571 #1613），请辅助会话更新描述。待办：后续小 PR——CSN 的 NaN 输入与空 split 处理、CPSC 的 NaN 记录跳过而非中断 set_task。
