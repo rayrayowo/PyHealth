@@ -178,3 +178,5 @@
 - 2026-11-26 PR 3 已开：https://github.com/sunlabuiuc/PyHealth/pull/1613 （[BTY-41] CPSC2018）。上游辅助会话已获用户长期授权（开 PR / 改描述 / 评论 /review，不含合并）。
 
 - 2026-11-26 定时检查：#1571 AI 审核 approve（commit 6137414），可由用户评论 /merge；两条可选建议（NaN 输入、空 split 静默）留作合并后的小 PR。#1613 尚无审核，已主动加入同样两处加固（非有限值报错、空 split 警告），17 测试通过并推送。#1570 仍等人工审核。
+
+- 2026-11-27 定时检查：#1613 AI 审核 approve（c214278）→ 用户可 /merge；可选：NaN 记录应跳过而非中断 set_task（留作后续）。#1571 维护者 solarsys 合并了 master 解决 __init__ 冲突（189463b），重审 need change → 新增不 mock QRS 的 set_task 测试 + CSN 线性探测示例脚本（5b9d2e0），已请辅助会话更新描述并 /review。#1570 澄清 MEME 剩余的是 ED decompensation（medmod 那个是 ICU+CXR），描述补充 handle 来源。
